@@ -44,9 +44,9 @@ def add_attendance_db(name, rate, attendance_data):
     if name and rate and attendance_data:
         # 出退勤情報を作成
         cursor.execute(
-            """INSERT INTO attendance_db(name, rate, attendance_data, time_now) 
-                        VALUES (%s, %s, %s, %s,)""",
-            (name, rate, attendance_data, datetime.datetime.utcnow()))
+            """INSERT INTO attendance_db(name, rate, attendance_data, time_now)
+                        VALUES (%s, %s, %s, %s)""",
+            (name, rate, attendance_data, datetime.datetime.now()))
         conn.commit()
     else:
         raise('正しく読み込まれませんでした')
@@ -60,3 +60,4 @@ def get_infomation_attendance():
 
     result = dict_cursor.fetchmany(size=50)
     return result
+    

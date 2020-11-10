@@ -15,7 +15,7 @@ from azure.cognitiveservices.vision.face import FaceClient
 from msrest.authentication import CognitiveServicesCredentials
 from azure.cognitiveservices.vision.face.models import TrainingStatusType, Person
 
-from train import PERSON_GROUP_ID, face_client
+from AZURE.train import PERSON_GROUP_ID, face_client
 
 
 # 画像内の顔の検出
@@ -46,12 +46,15 @@ def face_detected(face_data, image_name):
 
 
 def identify_faces(image, face_ids, detected_faces):
-    """return result_faces, result_name, rates
+    """return result_name, rates
 
     学習した顔のグループと入力された画像を比較し一致するものを返す"""
     # Identify faces
     results = face_client.face.identify(face_ids, PERSON_GROUP_ID)
     print('Identifying faces in {}'.format(os.path.basename(image.name)))
+
+    result_name = None
+    rate = 0
     
     if not results:
         print('No person identified in the person group for faces from {}.'.format(os.path.basename(image.name)))
@@ -84,7 +87,7 @@ def start_identify_faces(image):
     if detected_faces == None:
         # 顔を検出出来なかった場合の処理
         print('noface')
-        return False
+        return False, False
 
     # 顔の判定
     result_name, rate = identify_faces(input_image_data, image_face_ID, detected_faces)

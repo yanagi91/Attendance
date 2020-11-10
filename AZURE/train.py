@@ -16,9 +16,7 @@ from msrest.authentication import CognitiveServicesCredentials
 from azure.cognitiveservices.vision.face.models import TrainingStatusType, Person
 
 
-# フォルダ名から名前グループの作成
-path = 'image'
-person_group_name = os.listdir(path)
+
 
 # Set the FACE_SUBSCRIPTION_KEY environment variable with your key as the value.
 # This key will serve all examples in this document.
@@ -59,6 +57,7 @@ def face_traning(person_group_name):
 
     for person_name in person_group_name:
         # Define aragaki friend
+        print(person_name)
         train_person_name = face_client.person_group_person.create(PERSON_GROUP_ID, person_name)
 
         '''
@@ -73,6 +72,8 @@ def face_traning(person_group_name):
         for image in train_person_images:
             a = open(image, 'r+b')
             face_client.person_group_person.add_face_from_stream(PERSON_GROUP_ID, train_person_name.person_id, a)
+
+        time.sleep(12)
 
 
     '''
@@ -95,4 +96,7 @@ def face_traning(person_group_name):
 
 
 if __name__ == '__main__':
+    # フォルダ名から名前グループの作成
+    path = 'image'
+    person_group_name = os.listdir(path)
     face_traning(person_group_name)

@@ -3,7 +3,7 @@ import os
 
 image_path = "static/images/"
 
-if __name__ == '__main__':
+def face_cap():
     # 定数定義
     ESC_KEY = 27     # Escキー
     INTERVAL= 33     # 待ち時間
@@ -13,8 +13,7 @@ if __name__ == '__main__':
     GAUSSIAN_WINDOW_NAME = "gaussian"
 
     DEVICE_ID = 0
-
-    num = 0
+    flag = False
     # 分類器の指定
     cascade_file = "haarcascade_frontalface_alt2.xml"
     cascade = cv2.CascadeClassifier(cascade_file)
@@ -32,7 +31,6 @@ if __name__ == '__main__':
     
     # 変換処理ループ
     while end_flag == True:
-        num += 1
         
         # 画像の取得と顔の検出
         img = c_frame
@@ -44,10 +42,12 @@ if __name__ == '__main__':
             color = (0, 0, 225)
             pen_w = 3
             cv2.rectangle(img_gray, (x, y), (x+w, y+h), color, thickness = pen_w)
-            if num % 10 == 0:
-                image_name = "myface{}.jpg".format(num // 10)
-                cv2.imwrite(os.path.join(image_path,image_name),c_frame) # 画像の保存
+            image_name = "myface.jpg"
+            cv2.imwrite(os.path.join(image_path,image_name),c_frame) # 画像の保存
+            flag = True
 
+        if flag:
+            break
         # フレーム表示
         cv2.imshow(ORG_WINDOW_NAME, c_frame)
         cv2.imshow(GAUSSIAN_WINDOW_NAME, img_gray)
@@ -63,3 +63,7 @@ if __name__ == '__main__':
     # 終了処理
     cv2.destroyAllWindows()
     cap.release()
+
+
+if __name__ == '__main__':
+    face_cap()
